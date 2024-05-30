@@ -31,33 +31,33 @@ def perform_dimensionality_reduction(df, method, target_column_name):
     if method == "PCA":
         pipeline = Pipeline([
             ('preprocessor', preprocessor),
-            ('dim_reduction', PCA(n_components=2))  
+            ('dim_reduction', PCA(n_components=2))
         ])
     elif method == "t-SNE":
         pipeline = Pipeline([
             ('preprocessor', preprocessor),
-            ('dim_reduction', TSNE(n_components=2, random_state=42))  
+            ('dim_reduction', TSNE(n_components=2, random_state=42))
         ])
 
     X_reduced = pipeline.fit_transform(df)
-    
+
     target_column = None
     if target_column_name in df.columns:
         target_column = df[target_column_name]
-        if target_column.dtype == 'object':  
+        if target_column.dtype == 'object':
             label_encoder = LabelEncoder()
             target_column = label_encoder.fit_transform(target_column)
-    
+
     plt.figure(figsize=(10, 6))
     if target_column is not None:
         plt.scatter(X_reduced[:, 0], X_reduced[:, 1], c=target_column, cmap='plasma')
         plt.colorbar(label='Target')
     else:
         plt.scatter(X_reduced[:, 0], X_reduced[:, 1])
-    plt.xlabel(f'{method} Component 1')
-    plt.ylabel(f'{method} Component 2')
+    plt.xlabel(f'{method} Principal Component 1')
+    plt.ylabel(f'{method} Principal Component 2')
     plt.title(f'Οπτικοποίηση {method} ')
-    
+
     st.pyplot(plt)
 
     st.write(f" Ιστόγραμμα {target_column_name}")
@@ -90,11 +90,11 @@ with tab1:
             df = pd.read_csv(uploaded_file)
         else:
             df = pd.read_excel(uploaded_file)
-        
+
         method = st.selectbox("Επιλέξτε μέθοδο 2D οπτικοποίησης", ["PCA", "t-SNE"])
 
         target_column_name = df.columns[-1]
-        
+
         perform_dimensionality_reduction(df, method, target_column_name)
 
 with tab2:
@@ -102,7 +102,7 @@ with tab2:
 
     if uploaded_file is not None:
         target_column_name = df.columns[-1]
-        
+
         numerical_features = df.select_dtypes(include=['int', 'float']).columns.tolist()
         categorical_features = df.select_dtypes(include=['object']).columns.tolist()
 
@@ -121,7 +121,7 @@ with tab2:
         X = df.drop(columns=[target_column_name])
         y = df[target_column_name]
 
-        if y.dtype == 'object':  
+        if y.dtype == 'object':
             label_encoder = LabelEncoder()
             y = label_encoder.fit_transform(y)
 
@@ -132,7 +132,7 @@ with tab2:
         col1, col2 = st.columns(2)
 
         with col1:
-            st.subheader("K- Κοντινότεροι γείτονες")
+            st.subheader("K-Nearest Neighbors")
             n_neighbors = st.number_input("Επιλέξτε πλήθος γειτόνων", min_value=1, max_value=20, value=5, step=1, key="n_neighbors")
             if n_neighbors:
                 knn_model = KNeighborsClassifier(n_neighbors=n_neighbors)
@@ -147,7 +147,7 @@ with tab2:
                 st.session_state.knn_accuracy = knn_accuracy
 
         with col2:
-            st.subheader("Τυχαίο δάσος")
+            st.subheader("Random Forest")
             n_estimators = st.number_input("Επιλέξτε πλήθος δέντρων ", min_value=10, max_value=200, value=100, step=10, key="n_estimators")
             if n_estimators:
                 rf_model = RandomForestClassifier(n_estimators=n_estimators)
@@ -160,7 +160,7 @@ with tab2:
                 st.write("Πίνακας σύγχυσης:")
                 st.write(rf_conf_matrix)
                 st.session_state.rf_accuracy = rf_accuracy
-                
+
                 if 'knn_accuracy' in st.session_state and 'rf_accuracy' in st.session_state:
                     if st.session_state.knn_accuracy > st.session_state.rf_accuracy:
                         st.markdown("** Ο αλγόριθμος Κ-Κοντινότεροι γείτονες έχει μεγαλύτερη ακρίβεια**")
@@ -216,7 +216,7 @@ with tab3:
             st.pyplot(plt)
             st.session_state.kmeans_silhouette_avg = silhouette_avg_kmeans
 
-        st.subheader("Διάδοσης συνάφειας(Affinity propagation) ")
+        st.subheader("Affinity propagation(Διάδοση συνάφειας) ")
         damping = 0.9
         preference = st.number_input("Επιλέξτε μέτρο προτίμησης", value=-50, step=1, key="preference_affinity")
         if preference:
