@@ -65,7 +65,11 @@ def perform_dimensionality_reduction(df, method, target_column_name):
     sns.histplot(df[target_column_name])
     st.pyplot(plt)
 
+<<<<<<< HEAD
     st.write("Heatmap των χαρακτηριστικών με συνεχείς τιμές")
+=======
+    st.write("Heatmap των χαρακτηριστικών με συνεχής τιμές")
+>>>>>>> 5c8abf4 (docker files)
     plt.figure(figsize=(10, 8))
     sns.heatmap(df[numerical_features].corr(), annot=True, cmap='coolwarm')
     st.pyplot(plt)
