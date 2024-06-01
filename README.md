@@ -2,7 +2,7 @@
 
 This is a project that runs basic machine learning algorithms on datasets
 
-##How to use
+## How to use
 You need datasets of numerical attributes in either .csv, .xls, or .xlsx format
 You need python 3.12, and the following Python dependencies:
 streamlit
@@ -19,5 +19,5 @@ Docker .tar link: https://drive.google.com/file/d/1LL394KHpx_UieJbwrSnyilOywONSu
 
 
 
-##Algorithms
+## Algorithms
 The App supports PCA, t-SNE, K-NN, RandomForest, K-Means, AffinityPropagation algorithms. It will print graphs and output variables.
