@@ -3,7 +3,8 @@
 This is a project that runs basic machine learning algorithms on datasets
 
 ## How to use
-You need datasets of numerical attributes in either .csv, .xls, or .xlsx format
+You need datasets of only numerical attributes in one of  the following file extensions: .csv, .xls, or .xlsx
+
 You need python 3.12, and the following Python dependencies:
 streamlit
 seaborn
